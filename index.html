@@ -1,0 +1,517 @@
+**Course Title: Safety Fundamentals in Complex Systems Engineering**
+
+---
+
+## Section 1: Introduction to Safety
+
+### A Broad View of Safety
+In this class, we take a broad view of safety. An accident includes any undesirable loss—this could mean stakeholder losses like loss of life, mission failure, environmental damage, or the loss of critical protected information. This broad definition might be wider than you're used to, and the scope of safety can be customized to the types of losses your stakeholders care about. For instance, in the nuclear industry, safety might mean preventing damage to nuclear fuel rods, while in another field it could mean protecting confidential data or maintaining the integrity of a space mission.
+
+When we use terms like *hazardous* or *unsafe*, we are referring to conditions that lead to any form of stakeholder loss—not just loss of life. It is important to establish from the outset that our concern is with a wide spectrum of potential losses, depending on the context of the system and the values of the stakeholders involved.
+
+---
+
+## Section 2: Understanding Defects in System Engineering
+
+### The Timing of Defects
+We face a major problem in engineering complex systems, which has been recognized for decades. The issue lies in when and where defects are introduced versus when they are detected. Approximately 70% of defects are introduced during the requirements and design phases. Only about 20% are introduced during the software coding or hardware detailed design phases. However, we tend to discover these defects much later, particularly during testing and integration phases.
+
+This delay causes significant cost increases. The cost difference between fixing a defect during testing versus requirements can be as high as 21 to 80 times more. In fact, some data suggests that the cost of catching a defect late can be up to four orders of magnitude higher. These are not hypothetical figures—they're based on real industry data.
+
+### Early Investment, Hidden Costs
+NASA's 2015 data showed that although only 8% of project cost is spent during the concept phase, nearly 45% of the total cost is committed in that phase because of the long-term consequences of early decisions and assumptions. In essence, early-stage decisions lock in a significant portion of future costs.
+
+The Government Accountability Office (GAO) in the U.S. conducted a study of government-funded programs and found that the number one driver of cost and schedule overruns was inadequate systems engineering. Programs that suffered from these overruns had poor upfront investments in activities such as requirements analysis, concept analysis, and design processes.
+
+In this course, most examples and exercises will focus on the early stages of a project—concept, requirements, and early design—because that's where we have the greatest opportunity to influence outcomes at the lowest cost.
+
+---
+
+## Section 3: Historical Perspectives on Safety
+
+### The Evolution of Safety Models
+System safety and systems engineering grew up separately. About a hundred years ago, the foundation of system safety was rooted in the idea that human error caused accidents. This perspective led to models like the Domino Model and eventually the Swiss Cheese Model (1980), all of which emphasized human error as the root cause.
+
+In the 1950s and 60s, analytical techniques such as Failure Modes and Effects Analysis (FMEA) and Fault Tree Analysis (FTA) were developed. These methods were particularly effective for mechanical and electromechanical systems of that era. Functional FMEA emerged as well, focusing not only on hardware but also on system functions.
+
+### The Software Era and the Gap
+In the 1980s, a significant shift occurred—software began to control safety-critical systems. Despite this, safety methodologies didn’t evolve in parallel. Most techniques still in use today are incremental updates of methods from the 50s and 60s. While they remain useful, they are ill-equipped to handle the complexities introduced by modern software-driven systems.
+
+Research has introduced alternatives, but few have gained wide industry adoption. One notable exception is Systems-Theoretic Process Analysis (STPA), which has been codified into standards and used widely across industries.
+
+---
+
+## Section 4: Why STPA?
+
+### Filling the Gaps
+STPA was created to address new types of causes that older methods tend to miss. Unlike FMEA and fault trees, STPA focuses on system interactions, control structures, and process models. It helps identify unsafe control actions and emergent behaviors.
+
+This course is structured around this progression:
+1. We’ll begin with traditional methods like FMEA and FTA, showing their strengths and critical limitations.
+2. Then we’ll introduce STPA, showing how it fills those gaps.
+3. Finally, we’ll discuss STPA’s own limitations.
+
+The goal is not to declare STPA a silver bullet. Every method has limitations. What’s critical is understanding when a method applies, when it doesn’t, and what type of problem it's best suited to solve.
+
+### Pet Peeve: Ignoring Method Limitations
+One problem in industry standards and training courses is that they rarely highlight method limitations. Engineers are taught how to follow the steps of a method, but not when *not* to use it. That’s a gap this course aims to fill. We’ll openly discuss the strengths and shortcomings of each approach.
+
+---
+
+## Section 5: The Limits of Probability in Safety Analysis
+
+### Probability Isn’t a Universal Tool
+A common misconception in safety is the overreliance on probability as a universal tool for risk assessment. While probability is useful in many scenarios—particularly when estimating hardware failure rates or known risks—it is inadequate for a wide range of system and human-centric errors.
+
+For example, what is the probability that a requirement in a system is incorrect? Or that a function has been completely missed? What about the probability that the design of a control algorithm is unsafe, even if it meets all documented requirements? These are not quantifiable in the same way hardware failures are.
+
+Industry standards often prohibit the use of probability to estimate software design flaws, human errors, or organizational failures because these are inherently unpredictable. Probabilistic analysis struggles with estimating risks that involve assumptions, architectural flaws, and missing requirements—exactly the types of errors that dominate modern safety incidents.
+
+### Misleading Assurance
+Historically, systems have failed because flawed probabilistic reasoning gave a false sense of security. This leads to situations where designers calculate extremely low risks based on fault trees and numeric estimates but fail to account for interaction-level or assumption-level vulnerabilities.
+
+We will explore several real-world examples that reveal how probabilistic models can be off by multiple orders of magnitude—and how such errors contributed to catastrophic system failures.
+
+---
+
+## Section 6: Categories of Losses — Failure vs. Interaction
+
+### Component Failure Losses
+Traditional safety techniques, especially those originating in the 1950s and 60s, are focused on **component failure losses**. These occur when a component does not perform according to its written requirements. The consensus across various industry standards, such as IEC 61508, is that a **failure** is when a component either stops providing a required function or behaves in a way that contradicts its specifications.
+
+Classic examples:
+- A valve gets stuck in the open or closed position.
+- A hydraulic line ruptures.
+- A pump fails to operate.
+
+All of these result from a deviation from written requirements, and they’re the foundation for reliability engineering. Solutions usually involve redundancy (multiple valves or pumps), preventive maintenance, or fail-safe design (e.g., a spring-loaded valve that fails open).
+
+### Component Interaction Losses
+Modern safety must also address **component interaction losses**—situations where all components operate as designed, yet the system produces unsafe behavior due to unanticipated interactions.
+
+This shift began to be recognized in the 2000s, giving rise to what’s now called the **new view** of system safety:
+- **Old view**: Accidents stem from failures.
+- **New view**: Accidents can also stem from *uncontrolled interactions* between correctly functioning components.
+
+These are often emergent behaviors not explicitly specified anywhere. They occur because of flawed assumptions, incomplete requirements, or overlooked dependencies between software, hardware, and human actions.
+
+---
+
+## Section 7: Case Study — Mars Polar Lander
+
+### The Setup
+The Mars Polar Lander was an unmanned spacecraft designed to land on the Martian surface. During its descent, the lander deployed a parachute to slow down in Mars' thin atmosphere. It then jettisoned a heat shield and deployed three landing legs equipped with vibration sensors—also known as touchdown sensors. These sensors were designed to detect when the spacecraft touched the Martian surface, signaling the computer to cut off the descent thrusters.
+
+### What Went Wrong
+During descent, the sequence of events executed exactly as planned:
+- The parachute deployed.
+- The legs extended.
+- The vibration sensors in each leg detected the mechanical impact of deployment.
+
+These sensors were doing their job correctly—they registered the vibration and sent a signal to the flight computer. The software, interpreting these simultaneous signals from all three legs, concluded that the lander had touched down on Mars. Following its programming, it immediately shut off the descent thrusters.
+
+But the lander hadn’t touched down. It was still 40 meters in the air. With the thrusters disabled, it entered free fall and crashed onto the Martian surface at high speed. The $110 million mission was lost.
+
+### The Aftermath and Blame
+Who was at fault? It’s complicated:
+- The software engineers said, “The software did exactly what it was told to do—disable thrusters upon touchdown.”
+- The hardware engineers said, “Our sensors worked perfectly—they detected vibration, just as designed.”
+
+And they were both right. Every component operated correctly, in accordance with its written requirements.
+
+This was not a **component failure**.
+This was an **interaction failure**.
+
+The engineers had focused extensively on failure modes. Thousands of potential hardware and software failures were analyzed. But no one had asked: *What if everything works as designed—but the system logic is flawed?* That question never made it into any fault tree, any FMEA, or any requirements review.
+
+### Emergent Behavior
+The critical flaw here was in the **interaction between correct behaviors**. The landing leg sensors responded to a legitimate vibration (from leg deployment), but the system treated that vibration as a landing event. That interpretation occurred too early—when the spacecraft was still airborne.
+
+This highlights an important lesson:
+> **Emergent behavior** can arise even when individual components behave correctly.
+
+### Why Traditional Methods Missed It
+Failure-based methods like FMEA and Fault Tree Analysis are excellent at identifying what might go wrong with a component. But they assume the system works as designed. They rarely consider what happens when components interact in unanticipated—but technically correct—ways.
+
+In this case:
+- The software followed its flowchart perfectly.
+- The hardware sensors did what they were specified to do.
+- The system architecture didn’t account for timing and context in the interpretation of signals.
+
+What failed was the **system’s model of the world**—its belief that it was already on the surface of Mars.
+
+This is precisely the kind of hazard that **STPA is designed to uncover.**
+
+Section 8: Case Study — Hitomi Satellite
+The Setup
+
+Hitomi was a Japanese X-ray astronomy satellite launched by JAXA (Japan Aerospace Exploration Agency) in February 2016. It was built with an ambitious mission: to explore X-ray emissions from black holes and galaxy clusters with unprecedented precision. The satellite carried a suite of sophisticated instruments and cost nearly $300 million to develop.
+
+Shortly after launch, everything appeared nominal. Hitomi was in orbit, its instruments were healthy, and early data showed promise. But just a few weeks later, ground control lost communication with the satellite. Observations from Earth revealed that it had fragmented in orbit—broken into pieces and rendered non-functional.
+
+So what happened?
+Chain Reaction of Events
+
+The disaster began with a single faulty sensor reading. One of the satellite’s inertial reference units (IRUs) started reporting that the spacecraft was rotating slightly—when in fact, it wasn’t. The IRU was essentially hallucinating a slow spin.
+
+Now, the satellite was designed to correct for spin using reaction wheels—flywheels inside the spacecraft that spin to exert torque in the opposite direction. Based on the IRU’s faulty input, the onboard control software slowly ramped up the spin of the reaction wheels to compensate for this imaginary rotation.
+
+This by itself wasn't catastrophic. Redundancy existed. The spacecraft was equipped with star trackers—cameras that determine orientation by looking at known constellations. And indeed, the star trackers correctly reported: “Hey, we're not spinning.”
+
+But here’s the problem: the system was configured to distrust the star trackers if their data didn’t match the IRU. Instead of checking which sensor might be faulty, the satellite gave priority to the IRU and marked the star tracker as unreliable. So now, the system believed it was spinning—and didn’t trust the device that said otherwise.
+Escalation and Spinout
+
+This situation worsened over time. As the imaginary rotation continued, the reaction wheels sped up even more, building torque within the system. Eventually, the software declared the wheels had reached their operational limit. In response, it executed a failover recovery procedure.
+
+The recovery action involved switching from reaction wheels to thrusters—a far more aggressive method of attitude control. The software commanded a burst from the thrusters to stop the rotation it believed was happening.
+
+But again, the spacecraft wasn’t spinning. So the thruster burst introduced real spin—very high angular momentum—into the previously stable satellite. This real spin was now visible to ground telescopes, which started reporting a wobbling Hitomi.
+
+The final blow came as the spinning structure caused the solar arrays and extended structures to experience mechanical stress beyond design limits. They began to shear off. The satellite disintegrated into fragments and was declared a total loss.
+Root Causes and Analysis
+
+Once again, no individual component failed:
+
+    The IRU reported what it believed was true.
+
+    The software followed its logic exactly.
+
+    The thrusters fired on command.
+
+    The star tracker worked correctly—but its output was ignored.
+
+This wasn’t a failure of hardware. It wasn’t a software bug. It was a failure of the control logic’s assumptions and the interaction between components.
+
+Here’s what went wrong:
+
+    The IRU hallucinated spin due to an internal error.
+
+    The star tracker had the correct data but was flagged as faulty because it disagreed with the IRU.
+
+    The recovery algorithm was triggered based on a false belief.
+
+    Thruster activation, in response to a phantom condition, caused catastrophic spin.
+
+Systemic Lessons
+
+This event is a textbook case of:
+
+    Overtrust in one component’s data.
+
+    Faulty assumptions about sensor reliability.
+
+    Lack of system-level sanity checks.
+
+    Interaction-level failure—despite component correctness.
+
+If a systems-level model had explicitly questioned: “What do we do when sensors disagree?”, perhaps a more robust fault-handling strategy would have been in place. One that cross-verified with other subsystems or delayed recovery maneuvers until confirmation.
+
+It’s precisely this kind of question that STPA encourages you to ask.
+
+Section 8: Case Study — Hitomi Satellite
+The Setup
+
+Hitomi was a Japanese X-ray astronomy satellite launched by JAXA in 2016. It was designed to observe high-energy phenomena like black holes and galaxy clusters, offering deep insights into the structure of the universe. The spacecraft carried extremely sensitive instruments and had an ambitious mission profile. Everything worked perfectly after launch, and early operations were promising.
+
+But then, just over a month into the mission, Hitomi suddenly went silent. Ground control lost contact. Within hours, telescopes tracking the spacecraft observed that it had broken into pieces. A $273 million mission was lost.
+What Happened
+
+The sequence of failure began with a faulty reading from one of the spacecraft’s inertial reference units (IRUs). It falsely reported that the satellite was slowly rotating. This was not true—the spacecraft was stable. However, the onboard flight software responded by commanding the reaction wheels to counter the perceived spin.
+
+The spacecraft had multiple attitude sensors, including star trackers that could independently verify orientation by capturing images of the sky. These star trackers disagreed with the IRU and correctly reported that the satellite was not spinning. But the system had been configured to trust the IRUs more than the star trackers. The disagreement led to the star tracker data being disregarded.
+
+As the IRU continued to falsely indicate increasing rotation, the system kept spinning the reaction wheels faster to compensate. Eventually, the wheels hit their speed limits. At this point, the system triggered an automatic failover: it switched to thrusters to stabilize the spacecraft.
+
+This was a catastrophic misstep. Since the satellite wasn’t rotating in the first place, the thruster burst imparted real spin to a previously stable spacecraft. It began to tumble uncontrollably. The spin caused structural elements like solar arrays and instruments to break off, leading to complete disintegration.
+The Root Cause
+
+Every component in the Hitomi satellite worked as designed:
+
+    The IRU measured rotation based on its internal sensors.
+
+    The star trackers performed their task correctly.
+
+    The software faithfully executed its logic.
+
+    The thrusters fired in response to reaching wheel speed limits.
+
+The issue was a classic interaction failure:
+
+    There was no check for sensor disagreement resolution.
+
+    The software didn’t have a model of faulty sensor behavior.
+
+    Recovery logic didn’t account for false positives from IRUs.
+
+The Key Lesson
+
+This was not a hardware malfunction. It was a failure in the system’s control logic and trust architecture. The satellite trusted the wrong data, and when components followed through with their responses, the system spiraled into destruction.
+
+A systems-level safety analysis method like STPA could have identified the unsafe control actions that led to this outcome:
+
+    Unsafe reliance on a single sensor without validation.
+
+    No safe mode for resolving conflicts between sensor data.
+
+    Aggressive recovery maneuvers that lacked contextual checks.
+
+    Section 8: Case Study — Uber Self-Driving Car
+    The Setup
+    
+    On March 18, 2018, an autonomous vehicle operated by Uber struck and killed a pedestrian in Tempe, Arizona. This was the first known fatality involving a self-driving car and a pedestrian.
+    
+    The vehicle involved was a modified Volvo XC90 SUV equipped with Uber’s experimental autonomous driving system. Although the car had a safety driver sitting behind the wheel, the vehicle was in full autonomous mode at the time of the crash.
+    The Victim and the Context
+    
+    The victim, a woman named Elaine Herzberg, was walking her bicycle across a darkened stretch of road at night. There was no crosswalk at that location. The road was wide, visibility was poor, and she emerged from the shadows into the vehicle's path.
+    
+    The self-driving system had nearly 6 seconds to react.
+    The Perception Stack
+    
+    Uber’s software stack had a complex system for perception and tracking. The system worked roughly like this:
+    
+        The car would detect an object using LIDAR and radar.
+    
+        It would then attempt to classify the object: pedestrian? vehicle? bicycle?
+    
+        It would then predict what the object would do next: continue crossing? stop? turn around?
+    
+        Based on this, it would decide whether to slow down, stop, or continue.
+    
+    In Herzberg’s case, the system detected her. Repeatedly. But over the span of several seconds, it kept changing its classification:
+    
+        First, it tagged her as an unknown object.
+    
+        Then a vehicle.
+    
+        Then a bicycle.
+    
+        Then back to unknown.
+    
+    Each classification had different default behavioral predictions. For instance:
+    
+        If it’s a car, it might assume the object will stay in its lane.
+    
+        If it’s a pedestrian, it might expect erratic motion.
+    
+        If it’s a cyclist, it might expect moderate, forward movement.
+    
+    Because the classification kept changing, the predicted behavior of the object also changed constantly.
+    No Consistent Prediction = No Action
+    
+    Crucially, Uber’s software stack did not maintain state continuity. Every cycle, it restarted the object classification and prediction process from scratch. This meant that the object’s identity and behavior were being reinterpreted every 100 milliseconds or so. As a result:
+    
+        There was no long-term tracking of the object’s path.
+    
+        The predictions didn’t accumulate or stabilize.
+    
+        The system never gained enough confidence in the object’s path to trigger braking.
+    
+    The Tragic Outcome
+    
+    Only 1.2 seconds before impact, the system finally recognized that the object was a pedestrian and that a collision was imminent. But by design, it was too late.
+    
+    The emergency braking system built into the Volvo was disabled during autonomous operation to avoid conflicting with Uber’s own braking software. And Uber’s own software had a built-in delay in taking emergency actions—partly to reduce false positives.
+    
+    The system never activated the brakes.
+    
+    The car struck Herzberg at approximately 40 mph. She died from her injuries.
+    The Root Causes
+    
+    This was not a failure of perception hardware:
+    
+        The LIDAR and radar systems detected Herzberg.
+    
+        The cameras were operational.
+    
+        The onboard software was running.
+    
+    Instead, this was a failure of perception logic and interaction assumptions.
+    
+    Key design flaws included:
+    
+        No persistence in object tracking.
+    
+        Classification switching with no temporal memory.
+    
+        Braking disabled unless the system was highly confident.
+    
+    This was yet another case where components worked individually, but the interactions between subsystems failed to deliver safety.
+    Lessons Learned
+    
+        Temporal coherence matters: You must track objects over time, not reset every frame.
+    
+        Classification confidence should not delay braking: It is better to brake unnecessarily than to hesitate fatally.
+    
+        Safety systems should default to conservatism: The system should assume unknown objects may enter the path, especially at night.
+    
+    This is a textbook example of system-level failure due to interaction complexity and flawed assumptions, not component malfunction.
+
+    Section 9: Case Study — Boeing 787 Battery Fires
+    The Setup
+    
+    The Boeing 787 Dreamliner was a revolutionary aircraft in many ways. It was Boeing’s most advanced passenger airplane at the time, featuring cutting-edge composite materials, improved fuel efficiency, and state-of-the-art avionics. But one of its boldest design decisions was the use of lithium-ion batteries—the same type used in laptops and smartphones—to provide electrical power for many onboard systems.
+    
+    This decision was driven by the need for weight reduction and improved power efficiency. However, lithium-ion batteries come with well-known risks: if overcharged, overheated, or physically damaged, they can catch fire or explode.
+    
+    To mitigate this, Boeing built multiple layers of redundancy and protection around the battery system. They installed fire-resistant boxes, implemented smoke sensors, and engineered software logic to monitor and shut down systems under abnormal conditions.
+    
+    Despite these precautions, two serious battery fires occurred within months of the aircraft entering service, leading to the grounding of the entire 787 fleet worldwide in January 2013.
+    The First Incident
+    
+    On January 7, 2013, a Japan Airlines 787 was parked at the gate at Boston Logan International Airport. With no passengers onboard, the auxiliary power unit (APU) was running to keep systems operational. Then, unexpectedly, smoke was seen coming from the battery compartment.
+    
+    Firefighters were called. When they opened the battery enclosure, they discovered thermal runaway—a battery cell had overheated, caught fire, and triggered adjacent cells to ignite. It took hours to fully cool the compartment.
+    
+    Luckily, no one was injured. But it raised alarm bells.
+    The Second Incident
+    
+    Just over a week later, an All Nippon Airways (ANA) 787 had to make an emergency landing in Japan when pilots received warnings about battery problems and detected a burning smell in the cockpit. Passengers were evacuated, and once again, thermal runaway in the battery system was the cause.
+    
+    This second event confirmed that the first fire wasn’t an isolated manufacturing defect. Something systemic was wrong.
+    Investigation and Findings
+    
+    The NTSB (National Transportation Safety Board) launched an investigation. They examined battery enclosures, circuit boards, fire containment systems, and logs of system behavior.
+    
+    What they found was not a single failed component—but a collection of interacting design assumptions that failed under real-world conditions.
+    
+    Key findings included:
+    
+        The smoke detection system worked, but in one case, the power management software shut down the fans that were supposed to vent the smoke.
+    
+        The battery was operating within specified voltages, yet an internal short still occurred due to a manufacturing defect in one cell.
+    
+        The design assumed failures would be isolated, but thermal runaway cascaded across cells.
+    
+        The fire containment enclosure couldn’t fully stop heat propagation or prevent smoke leakage into the electronics bay.
+    
+    So once again:
+    
+        All components met their documented requirements.
+    
+        The interactions and assumptions between components led to uncontrolled failure.
+    
+    Emergent Behavior at Work
+    
+    This wasn’t just a battery issue—it was a system-level issue:
+    
+        The environmental control system relied on signals from smoke sensors—but had no override to keep the fans running in the presence of smoke.
+    
+        The assumption that only one cell could fail at a time turned out to be incorrect.
+    
+        Multiple software and hardware subsystems each acted rationally, but their combined effect failed to stop a dangerous situation.
+    
+    The 787 battery fires provide a clear example of modern aerospace systems operating in tightly coupled, highly interactive environments—where failure often comes not from a broken part, but from broken assumptions about how parts behave together.
+    The System Safety Lesson
+    
+    These incidents forced Boeing to redesign the battery enclosure, add stronger fire containment, modify software behavior, and review all power management assumptions. It was a sobering reminder that:
+    
+        “Safe components do not guarantee a safe system.”
+    
+    This incident emphasizes the value of methods like STPA, which explicitly examine unsafe control actions and flawed mental models—not just component reliability.
+
+    Section 10: The Control Loop Framework
+Why We Need a New Mental Model
+
+As we've seen from previous case studies—Mars Polar Lander, Hitomi, Uber’s autonomous vehicle, and the 787 battery fires—failures today often stem from correctly working components interacting in unsafe ways.
+
+To understand and prevent these kinds of losses, we need a model that allows us to:
+
+    Analyze system-level behavior rather than just component failures.
+
+    Understand how control decisions are made.
+
+    Identify where incorrect beliefs about the system state can lead to unsafe actions.
+
+This is where the Control Loop Framework comes in—a foundational concept used by STPA.
+The Anatomy of a Control Loop
+
+At the core of any system involving decisions, commands, and actions lies a control loop. This framework is composed of the following elements:
+
+    Controller: The decision-making unit. This could be a person, a computer, or a hybrid (e.g., a pilot using an autopilot).
+
+    Control Actions: Commands issued to influence the system (e.g., enable thrusters, apply brakes, adjust throttle).
+
+    Actuators and Controlled Process: The part of the system being acted on (e.g., a vehicle, an engine, a robot arm).
+
+    Sensors and Feedback: These collect data from the environment or the process to inform the controller of the system’s state.
+
+    Process Model: An internal representation (mental or software-based) that the controller uses to make decisions. This model can be outdated, incorrect, or incomplete.
+
+If a controller’s process model is flawed, it may make decisions that are entirely reasonable—given the model—but completely unsafe in reality.
+Example: Mars Polar Lander Revisited
+
+Let’s revisit the Mars Polar Lander through the lens of a control loop:
+
+    Controller: Onboard software.
+
+    Control Action: Disable descent thrusters upon touchdown.
+
+    Process Model: Belief that “if all three sensors report a jolt, the lander must be on the ground.”
+
+    Sensor Input: Signals from leg-mounted accelerometers.
+
+    Reality: The jolt was due to leg deployment, not landing.
+
+The process model was incomplete. It failed to distinguish between a vibration due to landing gear deployment and an actual surface landing.
+What Makes Control Unsafe?
+
+STPA focuses on identifying Unsafe Control Actions (UCAs)—cases where a control command:
+
+    Is provided when it should not be.
+
+    Is not provided when it should be.
+
+    Is applied at the wrong time or in the wrong order.
+
+    Is stopped too early or sustained too long.
+
+These unsafe actions often arise not because of bad code or hardware failure, but because of incorrect assumptions within the controller’s process model.
+Control Loops in Human-Machine Teams
+
+The framework is not limited to software systems. In fact, it works especially well for human-machine interactions.
+
+Take an air traffic controller:
+
+    They receive radar feedback (sensor input).
+
+    Their process model includes aircraft location, weather, and flight rules.
+
+    They issue control actions like “descend to 5,000 feet.”
+
+    Pilots execute the action, completing the loop.
+
+If the controller misinterprets radar signals (e.g., due to signal lag), they may issue a command that leads to a near miss or collision—even though their actions were reasonable based on their belief.
+Common Control Loop Failures
+
+Across systems, common sources of unsafe control include:
+
+    Delayed feedback (the system changes before feedback arrives).
+
+    Overtrust in automation (controller stops validating sensor data).
+
+    Noisy or missing sensor input.
+
+    Controller logic errors (e.g., logical oversights in software).
+
+    Conflicting models (human controller and automation disagree).
+
+All of these are prime targets for analysis within STPA.
+Why This Matters
+
+Most traditional safety tools focus on what might fail. Control loop modeling focuses on why correct actions in context may still lead to loss.
+
+It gives us the vocabulary to talk about:
+
+    Perception errors
+
+    Miscommunication
+
+    Faulty logic
+
+    Ambiguous procedures
+
+    Delayed responses
+
+… all of which are now primary contributors to modern accidents.
+
