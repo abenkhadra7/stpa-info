@@ -219,6 +219,50 @@
             </ul>
         </section>
 
+        <section id="section8-quiz" class="quiz-section">
+            <h2>Knowledge Check: Hitomi Satellite Failure</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p><strong>Question 4:</strong> What critical design flaw led to the destruction of the Hitomi satellite?</p>
+                    
+                    <div class="quiz-options">
+                        <div class="option">
+                            <input type="radio" id="q4-a" name="q4" value="a">
+                            <label for="q4-a">The star tracker sensors were manufactured with defects that prevented them from working properly</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-b" name="q4" value="b">
+                            <label for="q4-b">The system trusted data from the faulty IRU over the correct star trackers and didn't have a process for resolving conflicting sensor inputs</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-c" name="q4" value="c">
+                            <label for="q4-c">The reaction wheels had manufacturing defects that caused them to spin too rapidly</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q4-d" name="q4" value="d">
+                            <label for="q4-d">Software engineers wrote code with numerous bugs in the attitude control system</label>
+                        </div>
+                    </div>
+                    
+                    <button class="submit-btn" onclick="checkAnswer('q4', 'b')" data-correct="b">Submit Answer</button>
+                    
+                    <div class="feedback" id="feedback-q4-a">
+                        <p>Incorrect. The star trackers actually worked correctly and reported that the satellite was stable. The problem was that the system was designed to trust the IRU data more, even when the star trackers contradicted it.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q4-b">
+                        <p>Correct! The critical flaw was in how the system handled sensor disagreement. When the IRU incorrectly indicated rotation while the star trackers correctly showed stability, the system was designed to trust the IRU more. There was no mechanism to resolve this conflict or detect that the IRU might be providing false data. This demonstrates a process model flaw in the control system—it believed the satellite was rotating when it wasn't.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q4-c">
+                        <p>Incorrect. The reaction wheels functioned as designed, spinning faster in response to the IRU data. They hit their speed limits because they were continually trying to counter a rotation that didn't actually exist.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q4-d">
+                        <p>Incorrect. The software executed exactly as it was programmed to do—the issue wasn't bugs in the code. The problem was the design of the system architecture and trust relationships between sensors, which is a higher-level design decision rather than a coding error.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="section9" class="case-study">
             <h2>Case Study — Uber Self-Driving Car</h2>
             
@@ -304,6 +348,50 @@
             <p>This is a textbook example of system-level failure due to interaction complexity and flawed assumptions, not component malfunction.</p>
         </section>
 
+        <section id="section9-quiz" class="quiz-section">
+            <h2>Knowledge Check: Uber Self-Driving Car</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p><strong>Question 5:</strong> In the Uber self-driving car accident, what design flaw in the perception system contributed most directly to the fatality?</p>
+                    
+                    <div class="quiz-options">
+                        <div class="option">
+                            <input type="radio" id="q5-a" name="q5" value="a">
+                            <label for="q5-a">The LIDAR and radar systems failed to detect the pedestrian</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-b" name="q5" value="b">
+                            <label for="q5-b">The perception system constantly reclassified the pedestrian and lacked temporal memory across frames</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-c" name="q5" value="c">
+                            <label for="q5-c">The software contained coding errors that caused the braking system to fail</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q5-d" name="q5" value="d">
+                            <label for="q5-d">The safety driver was distracted and failed to override the automated system</label>
+                        </div>
+                    </div>
+                    
+                    <button class="submit-btn" onclick="checkAnswer('q5', 'b')" data-correct="b">Submit Answer</button>
+                    
+                    <div class="feedback" id="feedback-q5-a">
+                        <p>Incorrect. The sensors actually detected the pedestrian successfully multiple times. The LIDAR and radar systems were functioning properly. The issue was with how the system processed and interpreted this sensor data over time.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q5-b">
+                        <p>Correct! The perception system kept reclassifying the pedestrian (first as an unknown object, then a vehicle, then a bicycle, then back to unknown) and didn't maintain state continuity. Every 100 milliseconds, it restarted classification from scratch without "remembering" what it had detected previously. This lack of temporal memory meant the system never gained enough confidence about the object's identity or trajectory to trigger emergency braking.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q5-c">
+                        <p>Incorrect. The software was not buggy—it executed as designed. The issue was the design itself, particularly how the perception stack processed information across time and made decisions about when to apply braking based on classification confidence.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q5-d">
+                        <p>Incorrect. While the safety driver's distraction was a contributing factor, this quiz question asks specifically about the design flaw in the perception system that contributed to the accident. The system's design flaws would have been problematic regardless of driver attention.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="section10" class="case-study">
             <h2>Case Study — Boeing 787 Battery Fires</h2>
             
@@ -363,6 +451,50 @@
             <blockquote>"Safe components do not guarantee a safe system."</blockquote>
             
             <p>This incident emphasizes the value of methods like STPA, which explicitly examine unsafe control actions and flawed mental models—not just component reliability.</p>
+        </section>
+
+        <section id="section10-new-quiz" class="quiz-section">
+            <h2>Knowledge Check: Boeing 787 Battery Fires</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p><strong>Question 6:</strong> Which statement best describes why the Boeing 787 battery fires represented a system-level rather than a component-level failure?</p>
+                    
+                    <div class="quiz-options">
+                        <div class="option">
+                            <input type="radio" id="q6-a" name="q6" value="a">
+                            <label for="q6-a">The lithium-ion batteries were manufactured with defects that made them prone to catching fire</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-b" name="q6" value="b">
+                            <label for="q6-b">The engineers didn't follow proper safety protocols when designing the electrical system</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-c" name="q6" value="c">
+                            <label for="q6-c">Multiple subsystems each worked according to specification, but their interactions and flawed assumptions about each other's behavior led to the fires</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q6-d" name="q6" value="d">
+                            <label for="q6-d">The smoke detection system failed to identify the presence of smoke in the battery compartment</label>
+                        </div>
+                    </div>
+                    
+                    <button class="submit-btn" onclick="checkAnswer('q6', 'c')" data-correct="c">Submit Answer</button>
+                    
+                    <div class="feedback" id="feedback-q6-a">
+                        <p>Incorrect. While manufacturing defects in one cell may have contributed to the initial short circuit, the case study emphasizes that the key issue was how the entire system responded to this event. Individual component quality was not the primary system safety concern.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q6-b">
+                        <p>Incorrect. The engineers did follow standard safety protocols of the time and implemented multiple layers of protection. The issue was that their design assumptions about how these various protection systems would interact were flawed.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q6-c">
+                        <p>Correct! This is the essence of a system-level failure. The smoke detection system worked, the battery monitoring system worked, the fire containment enclosure worked—all according to their individual specifications. However, their interactions created unsafe conditions: the power management software shut down fans that were supposed to vent smoke, thermal runaway cascaded across cells despite assumptions that failures would be isolated, and the fire containment couldn't fully prevent heat propagation. These interaction failures and flawed assumptions about system behavior are hallmarks of modern system safety issues.</p>
+                    </div>
+                    <div class="feedback" id="feedback-q6-d">
+                        <p>Incorrect. The smoke detection system actually worked as designed and detected the smoke. The problem was that in one case, the power management software shut down the fans that were meant to vent the smoke, showing an interaction problem rather than a component failure.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="section11">
@@ -520,6 +652,9 @@
             document.getElementById("progressBar").style.width = scrolled + "%";
         };
     </script>
+    
+    <!-- Link to external JS file -->
+    <script src="script.js"></script>
 </body>
 </html>
 
