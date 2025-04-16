@@ -173,3 +173,31 @@ hr {
         display: none;
     }
 }
+
+/* Diagram container styling */
+.diagram-container {
+    width: 100%;
+    margin: 20px 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #444450;
+}
+
+.diagram-container iframe {
+    width: 100%;
+    height: 700px;
+    border: none;
+}
+
+@media (min-width: 1200px) {
+    .diagram-container {
+        width: 220%;
+        margin-left: -60%;
+    }
+    
+    .diagram-container iframe {
+        height: 800px;
+    }
+}
